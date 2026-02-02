@@ -1,0 +1,109 @@
+---
+
+---
+<header>
+    <nav>
+        <img class="logo" src="src/assets/icons/logo.png" alt="">
+        <ul>
+            <li>
+                <a href="/">Forside</a>
+            </li>
+            <li>
+                <a href="/tjenester">Tjenester</a>
+            </li>
+            <li>
+                <a href="/traenere">Trænere</a>
+            </li>
+            <li>
+                <a href="/priser">Priser</a>
+            </li>
+            <li>
+                <a href="/om-os">Om os</a>
+            </li>
+            <li>
+                <a href="/kontakt">Kontakt</a>
+            </li>
+            <li>
+                <a href="/login">Login</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="title-div">
+        <h1 class="title">XTREME FITNNESS</h1>
+        <h2 class="subtitle">BLIV STÆRK</h2>
+        <h3 class="desc">Det bedste fitnesscenter — hvor styrke og sundhed vokser sammen.</h3>
+        <div class="subscribe-con">
+           <a href="/about">
+                <p>Tilmeld dig nu</p>
+                <img src="/src/assets/icons/Button.svg" alt="">
+            </a>
+        </div> 
+    </div>
+</header>
+
+<style>
+    .subscribe-con {
+        display: inline-block; 
+        border: 2px solid gray;
+        border-radius: 40px;
+        padding: 5px;
+        margin-top: 5rem;
+    }
+
+    .subscribe-con a {
+        display: flex !important;
+        flex-direction: row;
+        align-items: center;
+        text-decoration: none;
+        gap: 8px;
+    }
+
+    .subscribe-con p {
+        margin: 0;
+        display: inline;
+        white-space: nowrap;
+    }
+    .title-div{
+        padding: 17rem 7rem 7rem 7rem;
+    }
+    .title{
+        font-size: 55px;
+    }
+    .subtitle{
+        font-size: 130px;
+    }
+    .desc{
+        font-size: 30px;
+    }
+    .title, .subtitle, .desc{
+        color: white;
+    }
+    header {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-color: #333; 
+        background-image: url('../assets/headers/mainHeader.jpg');
+        width: 100%;
+        min-height: 100%;
+    }
+    nav {
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px;
+        justify-content: space-between;
+    }
+    ul{
+        display: flex;
+        gap: 3rem;
+        padding: 1rem;
+    }
+    a {
+        color: white;
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        &:hover{
+            color: var(--orange);
+        }
+    }
+</style>

@@ -1,0 +1,105 @@
+---
+---
+<footer>
+    <div class="logo-con">
+        <img src="src/assets/icons/logo.png" alt="">
+        <small>Hos os handler træning om glæde, kvalitet og resultater </small>
+        <div>
+            <a class="logo-link" href=""><img class="logo-img" src="src/assets/icons/facebook.svg" alt=""></a>
+            <a class="logo-link" href=""><img class="logo-img" src="src/assets/icons/twitter.svg" alt=""></a>
+            <a class="logo-link" href=""><img class="logo-img" src="src/assets/icons/Instagram.svg" alt=""></a>
+        </div>
+    </div>
+    <div class="opening-con">
+        <p class="footer-header">ÅBNINGSTIDER</p>
+        <p class="subheader">Mandag - Fredag</p>
+        <time datetime="">12.00 - 14.00</time>
+        <p class="subheader">Lørdag</p>
+        <time datetime="">17.30 - 00.00</time>
+        <p class="subheader">Søndag</p>
+        <time datetime="">17.30 - 00.00</time>
+    </div>
+    <div class="links-con">
+        <p class="footer-header">HURTIGE LINKS</p>
+        <a href="">Om</a>
+        <a href="">Tjenester</a>
+        <a href="">Trænere</a>
+        <a href="">Priser</a>
+        <a href="">Kontakt</a>
+    </div>
+    <div class="contact-con">
+        <p class="footer-header">KONTAKT OS</p>
+        <p class="subheader">Adresse:</p>
+        <address>Nørregade 42, 9000 Aalborg</address>
+        <p class="subheader">Email:</p>
+        <address>info@xtremefitness.dk</address>
+        <p class="subheader">Telefon:</p>
+        <address>+ 45 99751642</address>
+    </div>
+    <small class="footer-copyright">Copyright 2025 xtremefitness.dk - All Rights Reserved</small>
+</footer>
+
+<style>
+    small, p, time, address {
+        color : #777777;
+    }
+    .subheader{
+        color: white;
+    }
+    .footer-header{
+        color: white;
+        font-weight: bold;
+    }
+    footer {
+        background-image: url('../assets/Footer(1).svg');
+        width: 100%;
+        height: 400px; 
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+        bottom: 0;
+        display: flex;
+        flex-wrap: wrap; 
+        justify-content: space-around;
+        align-items: flex-start;
+        padding-top: 50px;
+    }
+    .logo-con{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding-top: 30px;
+        }
+    .logo-link {
+        background-color: #777777;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none; 
+    }
+
+    .logo-img {
+        width: 18px;
+        height: 18px;
+        display: block;
+    }
+    .footer-copyright {
+        display: block;
+        border-top: 1px solid #777777;
+        text-align: center;
+        padding: 20px 0;
+        margin-top: 20px;
+        width: 100%;
+        bottom: 0;
+    }
+    .links-con{
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+</style>

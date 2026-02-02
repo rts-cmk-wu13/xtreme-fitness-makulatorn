@@ -1,0 +1,134 @@
+---
+import { safeGetExercises } from '../lib/api';
+const exercises = await safeGetExercises();
+---
+
+<section class="exercise-con">
+    <div class="exercise-header">
+        <h2 class="con-title">DETTE TILBYDER VI</h2>
+        <p class="con-subtitle">VI TILBYDER EKSLUSIVE ØVELSER</p>
+    </div>
+    <div class="exercises-con" id="exercise-con">
+        {exercises.map((ex, index) => (
+            <div class="exercise-card" data-index={index}>
+                <div class="icon-wrapper">
+                    <img class="exercise-img" src={ex.asset.url} alt={ex.asset.altText} />
+                </div>
+                <h3 class="exercise-title">{ex.title}</h3>
+                <p class="exercise-teaser">{ex.teaser}</p>
+                </a>
+            </div>
+        ))}
+    </div>
+
+    <div class="controls">
+        <button id="prevBtn">←</button>
+        <button id="nextBtn">→</button>
+    </div>
+</section>
+
+<style>
+    .con-title{
+        font-size: 30px;
+    }
+    .con-subtitle{
+        font-size: 55px;
+        font-weight: bold;
+        margin-bottom: 45.5px;
+    }
+    .exercise-title{
+        font-size: 38px;
+    }
+    .exercise-img{
+        width: 130px;
+        height: 116px;
+    }
+    .exercise-header{
+        text-align: center;
+    }
+    .exercise-con {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        overflow: hidden;
+        padding: 110px 0 110px 0;
+    }
+    .exercises-con {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding: 1rem;
+    }
+    .exercise-card {
+        background: white;
+        padding: 20px;
+        color: black;
+        border-radius: 20px;
+        height: 451px;
+        width: 313px;
+        box-shadow: 1px 1px 10px 5px #aaaaaa;
+        text-align: center;
+    }
+    .exercise-card.hidden {
+        display: none;
+    }
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    button {
+        background: black;
+        border: none;
+        color: white;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 100px;
+    }
+    button:disabled {
+        background: #444;
+        cursor: not-allowed;
+    }
+</style>
+
+<script>
+    const cards = document.querySelectorAll('.exercise-card');
+    const prevBtn = document.getElementById('prevBtn') as HTMLButtonElement;
+    const nextBtn = document.getElementById('nextBtn') as HTMLButtonElement;
+
+    let currentPage = 0;
+    const itemsPerPage = 3;
+    const totalPages = Math.ceil(cards.length / itemsPerPage);
+
+    function updateSlider() {
+        cards.forEach((card, index) => {
+            const start = currentPage * itemsPerPage;
+            const end = start + itemsPerPage;
+            
+            if (index >= start && index < end) {
+                (card as HTMLElement).style.display = 'block';
+            } else {
+                (card as HTMLElement).style.display = 'none';
+            }
+        });
+
+        prevBtn.disabled = currentPage === 0;
+        nextBtn.disabled = currentPage === totalPages - 1;
+    }
+
+    prevBtn?.addEventListener('click', () => {
+        if (currentPage > 0) {
+            currentPage--;
+            updateSlider();
+        }
+    });
+
+    nextBtn?.addEventListener('click', () => {
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            updateSlider();
+        }
+    });
+    updateSlider();
+</script>

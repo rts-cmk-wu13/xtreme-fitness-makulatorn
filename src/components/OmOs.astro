@@ -1,0 +1,119 @@
+---
+
+---
+
+<section class="about">
+    <div class="about-txt-con">
+        <p class="title">OM OS</p>
+        <p class="subtitle">VELKOMMEN TIL XTREME FITNESS</p>
+        <p class="desc">Xtreme Fitness er stedet, hvor sved, grin og god musik går hånd i hånd. Vi lover ikke mirakler - men vi lover, at du bliver stærkere, gladere og får ondt i muskler, du ikke vidste, du havde!</p>
+        <div class="about-details">
+            <div>
+                <p class="about-int">600K+</p>
+                <p class="about-txt">ARBEJDSTIMER</p>
+            </div>
+            <div>
+                <p class="about-int">790+</p>
+                <p class="about-txt">PROGRAMMER</p>
+            </div>
+        </div>
+        <div class="about-details">
+            <div>
+                <p class="about-int">2560+</p>
+                <p class="about-txt">GLADE KUNDER</p>
+            </div>
+            <div>
+                <p class="about-int">2560+</p>
+                <p class="about-txt">SUNDERE KROPPE</p>
+            </div>
+        </div>
+        <div class="subscribe-con">
+           <a class="tilmeld" href="/about">
+                <p>Tilmeld dig nu</p>
+                <img src="/src/assets/icons/Button.svg" alt="">
+            </a>
+        </div> 
+    </div>
+</section>
+
+<style>
+    .desc{
+        margin-bottom: 27px;
+    }
+    .about-txt{
+        font-size: 23px;
+        font-weight: bold;
+    }
+    .about-int{
+        font-size: 54px;
+        font-weight: bold;
+        color: var(--orange);
+    }
+    .about-details div {
+        width: 200px; 
+        flex-shrink: 0; 
+    }
+    .about-details {
+        display: flex;
+        gap: 3rem; 
+        margin-bottom: 2rem; 
+    }
+    .subtitle{
+        margin-bottom: 30px;
+    }
+    .title{
+        color: var(--orange);
+        font-size: 30px;
+    }
+    .subtitle{
+        font-size: 55px;
+        font-weight: bold;
+    }
+    .about {
+        background-image: url('../assets/images/about_us.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-color: #333; 
+        width: auto;
+        height: 100vh;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center; 
+        padding-right: 10%;
+    }
+
+    .about-txt-con {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        color: white;
+        width: 480px;
+        max-width: 100%;
+        align-items: flex-start;
+    }
+    .subscribe-con {
+        display: flex; 
+        border: 2px solid gray;
+        border-radius: 40px;
+        padding: 5px;
+        margin-top: 5rem;
+    }
+
+    .subscribe-con a {
+        display: flex !important;
+        flex-direction: row;
+        align-items: center;
+        text-decoration: none;
+        gap: 8px;
+    }
+
+    .subscribe-con p {
+        margin: 0;
+        display: inline;
+        white-space: nowrap;
+    }
+    .tilmeld{
+        margin: 6px;
+    }
+</style>

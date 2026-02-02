@@ -1,0 +1,69 @@
+---
+const { title, bgImage } = Astro.props;
+
+---
+<header style={{ backgroundImage: `url(${bgImage})` }}>
+    <nav>
+        <img class="logo" src="src/assets/icons/logo.png" alt="">
+        <ul>
+            <li>
+                <a href="/">Forside</a>
+            </li>
+            <li>
+                <a href="/tjenester">Tjenester</a>
+            </li>
+            <li>
+                <a href="/traenere">Trænere</a>
+            </li>
+            <li>
+                <a href="/priser">Priser</a>
+            </li>
+            <li>
+                <a href="/om-os">Om os</a>
+            </li>
+            <li>
+                <a href="/kontakt">Kontakt</a>
+            </li>
+            <li>
+                <a href="/login">Login</a>
+            </li>
+        </ul>
+    </nav>
+    <h1>{title}</h1>
+</header>
+
+<style>
+    header {
+        width: auto;
+        height: 573px;
+        min-height: 300px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-color: #333; 
+    }
+    nav {
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px;
+        justify-content: space-between;
+    }
+    ul{
+        display: flex;
+        gap: 3rem;
+        padding: 1rem;
+    }
+    a {
+        color: white;
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        &:hover{
+            color: var(--orange);
+        }
+    }
+    h1{
+        color: white;
+        font-size: 130pt;
+        text-align: center;
+    }
+</style>

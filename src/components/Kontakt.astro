@@ -1,0 +1,225 @@
+---
+---
+<section class="contact-section"> 
+    <form id="contact-form" novalidate>
+        <div class="contact-header">
+            <h1 class="contact-title">KONTAKT OS</h1>
+            <h2 class="contact-subtitle">SEND OS EN BESKED OG VI SVARER HURTIGST MULIGT</h2>
+        </div>
+        <div class="input-con">
+            <div class="input-subcon">
+                <input class="form-input" type="text" name="name" placeholder="Navn" required>
+                <input class="form-input" type="text" name="phone" placeholder="Telefon" required>
+            </div>
+            <div class="input-subcon">
+                <input class="form-input" type="email" name="email" placeholder="Email" required>
+                <input class="form-input" type="text" name="subject" placeholder="Emne" required>
+            </div>
+            <textarea class="form-textarea" name="message" placeholder="Din besked" required></textarea>
+            
+            <button type="submit" class="subscribe-con">
+                <span>Send</span>
+                <img src="/src/assets/icons/Button.svg" alt="">
+            </button>
+        </div>
+    </form>
+
+    <div id="toast" class="toast-hidden">
+        <div class="toast-content">
+            <span id="toast-message"></span>
+        </div>
+    </div>
+</section>
+
+<script>
+    import * as R from 'ramda';
+    import { safeSubmitContact } from '../lib/api';
+
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toast-message');
+
+    const showToast = (message: string, isError = false) => {
+        if (!toast || !toastMsg) return;
+        
+        toastMsg.textContent = message;
+        toast.classList.remove('toast-hidden', 'toast-visible', 'error', 'success');
+        
+        toast.classList.add('toast-visible');
+        toast.classList.add(isError ? 'error' : 'success');
+        
+        setTimeout(() => {
+            toast.classList.replace('toast-visible', 'toast-hidden');
+        }, 4000);
+    };
+
+    const handleFormResponse = (response: any) => {
+        if (response.success) {
+            showToast("Besked sendt korrekt!");
+            form.reset();
+            form.classList.remove('show-validation');
+        } else {
+            showToast(response.message, true);
+        }
+    };
+    
+    const handleSubmit = async (e: Event) => {
+        e.preventDefault();
+        form.classList.add('show-validation');
+
+        const data = R.pipe(
+            (ev: Event) => new FormData(ev.currentTarget as HTMLFormElement),
+            Object.fromEntries
+        )(e);
+
+        const response = await safeSubmitContact(data);
+        handleFormResponse(response);
+    };
+
+    form?.addEventListener('submit', handleSubmit);
+</script>
+
+<style>
+
+    .subscribe-con  {
+        display: flex !important;
+        flex-direction: row;
+        align-items: center;
+        text-decoration: none;
+        gap: 8px;
+        border: 2px solid gray;
+        color: white;
+        border-radius: 40px;
+        padding: 5px 5px 5px 2rem;
+        margin-left: 8rem;
+    }
+
+    .subscribe-con input {
+        margin: 0;
+        display: inline;
+        white-space: nowrap;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    section {
+        background-image: url('../assets/images/contact_us.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-color: #111; 
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end; /* Pushes the entire block to the right side of the screen */
+        align-items: center; 
+        padding-right: 10%; 
+        box-sizing: border-box;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        align-items: flex-start; /* Aligns all content to the left of its own container */
+        width: auto; 
+        max-width: 800px; 
+        text-align: left;
+    }
+
+    .contact-header {
+        text-align: left;
+        width: 100%;
+    }
+
+    .contact-title {
+        color: var(--orange, #ff8800);
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        width: 100%; 
+    }
+
+    .contact-subtitle {
+        font-size: 55px;
+        font-weight: bold;
+        color: white;
+        line-height: 1.1;
+        margin-bottom: 2rem;
+        width: 100%;
+        max-width: 700px;
+    }
+
+    .input-con {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .input-subcon {
+        display: flex;
+        gap: 35px;
+        margin: 0px 0px 35px 0px;
+    }
+
+    .form-input, 
+    .form-textarea {
+        padding: 0.7rem 1.5rem;
+        border: 1px solid white;
+        background: white;
+        color: #777777;
+        width: 209px; 
+        max-width: 100%;
+        box-sizing: border-box;
+        font-family: inherit;
+        border-radius: 50px;
+    }
+
+    .form-textarea {
+        width: 453px; 
+        height: 120px;
+        border-radius: 25px;
+        resize: vertical;
+        margin-bottom: 20px;
+    }
+
+    .show-validation :invalid {
+        border-color: #ff3366;
+    }
+
+    .toast-hidden {
+        position: fixed;
+        bottom: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        opacity: 0;
+    }
+
+    .toast-visible {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 1;
+        z-index: 1000;
+        transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .toast-content {
+        background: #1a1a1a;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .success .toast-content { border: 1px solid #00ff88; }
+    .error .toast-content { border: 1px solid #ff3366; }
+    .success { color: #00ff88; }
+    .error { color: #ff3366; }
+    #toast-message { font-weight: bold; }
+</style>
