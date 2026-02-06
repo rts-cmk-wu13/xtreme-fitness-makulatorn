@@ -3,6 +3,7 @@
 ## Start af projektet
 For at køre projektet lokalt:
 ```bash
+cd eksamen/
 npm install
 npm run dev
 ```

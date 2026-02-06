@@ -52,6 +52,8 @@ const { title, bgImage } = Astro.props;
         display: flex;
         gap: 3rem;
         padding: 1rem;
+        max-width: 100%;
+        flex-wrap: wrap;
     }
     a {
         color: white;
@@ -65,6 +67,11 @@ const { title, bgImage } = Astro.props;
         color: white;
         font-size: 130pt;
         text-align: center;
+    }
+    @media screen and (max-width: 800px){
+        h1, h2{
+            font-size: 65pt;
+        }
     }
 </style>
 

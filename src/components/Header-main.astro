@@ -97,6 +97,8 @@
         display: flex;
         gap: 3rem;
         padding: 1rem;
+        max-width: 100%;
+        flex-wrap: wrap;
     }
     a {
         color: white;
@@ -105,6 +107,12 @@
         &:hover{
             color: var(--orange);
         }
+    }
+    @media screen and (max-width: 800px){
+        .title, .subtitle, h1, h2{
+            font-size: 65pt;
+        }
+
     }
 </style>
 

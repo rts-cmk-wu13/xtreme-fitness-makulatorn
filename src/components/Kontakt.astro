@@ -75,7 +75,7 @@
         font-size: 20px;
         font-weight: 600;
     }
-    section {
+    .contact-section {
         background-image: url('../assets/images/contact_us.jpg');
         background-repeat: no-repeat;
         background-size: cover;
@@ -196,4 +196,16 @@
     .success { color: #00ff88; }
     .error { color: #ff3366; }
     #toast-message { font-weight: bold; }
+
+    @media screen and (max-width: 800px){
+        .contact-section{
+            padding: unset;
+        }
+        form{
+            align-items: center;
+        }
+        h1, h2{
+            text-align: center;
+        }
+    }
 </style>
