@@ -22,6 +22,7 @@ a, li, ul, button, input{
 :root{
    --border-color: #FF2A70;
    --orange: #E54E41;
+   --grey: #777777;
    --background-image: url('/assets/bg/pattern_bg.jpg');
    --background-image-2: url('/assets/bg/slider_bg_overlay.png');
 }

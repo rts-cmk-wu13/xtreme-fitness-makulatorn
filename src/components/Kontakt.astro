@@ -34,48 +34,22 @@
 <script>
     import * as R from 'ramda';
     import { safeSubmitContact } from '../lib/api';
+    import { handleToastResponse } from '../lib/toast';
 
     const form = document.getElementById('contact-form') as HTMLFormElement;
-    const toast = document.getElementById('toast');
-    const toastMsg = document.getElementById('toast-message');
+    const feedback = handleToastResponse('Din besked er blevet sendt!');
 
-    const showToast = (message: string, isError = false) => {
-        if (!toast || !toastMsg) return;
-        
-        toastMsg.textContent = message;
-        toast.classList.remove('toast-hidden', 'toast-visible', 'error', 'success');
-        
-        toast.classList.add('toast-visible');
-        toast.classList.add(isError ? 'error' : 'success');
-        
-        setTimeout(() => {
-            toast.classList.replace('toast-visible', 'toast-hidden');
-        }, 4000);
-    };
-
-    const handleFormResponse = (response: any) => {
-        if (response.success) {
-            showToast("Besked sendt korrekt!");
-            form.reset();
-            form.classList.remove('show-validation');
-        } else {
-            showToast(response.message, true);
-        }
-    };
-    
-    const handleSubmit = async (e: Event) => {
-        e.preventDefault();
-        form.classList.add('show-validation');
-
-        const data = R.pipe(
-            (ev: Event) => new FormData(ev.currentTarget as HTMLFormElement),
-            Object.fromEntries
-        )(e);
-
-        const response = await safeSubmitContact(data);
-        handleFormResponse(response);
-    };
-
+    const handleSubmit = R.pipe(
+        R.tap((e: any) => e.preventDefault()),
+        R.tap(() => form.classList.add('show-validation')),
+        (e: any) => Object.fromEntries(new FormData(e.currentTarget)) as Record<string, any>,
+        safeSubmitContact,
+        R.andThen(R.tap(R.ifElse(
+            feedback,
+            () => { form.reset(); form.classList.remove('show-validation'); },
+            R.always(null)
+        )))
+    );
     form?.addEventListener('submit', handleSubmit);
 </script>
 
@@ -110,7 +84,7 @@
         height: 100vh;
         width: 100%;
         display: flex;
-        justify-content: flex-end; /* Pushes the entire block to the right side of the screen */
+        justify-content: flex-end;
         align-items: center; 
         padding-right: 10%; 
         box-sizing: border-box;
@@ -120,7 +94,7 @@
         display: flex;
         flex-direction: column;
         gap: 1.2rem;
-        align-items: flex-start; /* Aligns all content to the left of its own container */
+        align-items: flex-start; 
         width: auto; 
         max-width: 800px; 
         text-align: left;

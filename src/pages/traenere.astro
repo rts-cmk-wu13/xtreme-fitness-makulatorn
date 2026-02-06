@@ -1,0 +1,96 @@
+---
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import Layout from '../layouts/Layout.astro'
+import Kontakt from '../components/Kontakt.astro'
+
+import { safeGetEmployees } from '../lib/api.ts'
+import Blog from '../components/Blog.astro'
+const employees = await safeGetEmployees();
+---
+<Layout>
+    <Header title="TRÆNERE" bgImage="src/assets/headers/employeesHeader.jpg" />
+    <section>
+        <h1>TRÆNERE</h1>
+        <h2>VORES HOLD AF EKSPERTER</h2>
+        <div class="div-con">
+            {employees.map((trainer: any) => (
+            <div class="card-con">
+                <img class="card-img" src={trainer.asset.url} alt={trainer.asset.altText}>
+                <div>
+                    <h3>{trainer.name}</h3>
+                    <p>{trainer.area}</p>
+                </div>
+                <div class="icon-con">
+                    <a href=""><img src="src/assets/icons/Facebook2.svg" alt=""></a>
+                    <a href=""><img src="src/assets/icons/Instagram2.svg" alt=""></a>
+                    <a href=""><img src="src/assets/icons/Twitter2.svg" alt=""></a>
+                </div>
+            </div>
+        ))}
+        </div>
+    </section>
+    <Kontakt />
+    <Blog/>
+    <Footer />
+</Layout>
+
+<style>
+    section {
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    h1, h2 {
+        text-align: center;
+        padding: 1rem;
+    }
+
+    h1{
+        margin-top: 144px;
+        font-size: 31px;
+        color: var(--orange);
+    }
+
+    h2{
+        font-size: 55px;
+        font-weight: bold;
+    }
+    h3{
+        font-size: 38px;
+        text-wrap: nowrap;
+    }
+    p{
+        font-size: 25px;
+    }
+    .card-con{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 38px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .div-con {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 2rem; 
+        max-width: 1200px; 
+        margin: 0 auto; 
+        width: 100%;
+        padding: 100px;
+    }
+
+    .card-img {
+        width: 223px;
+        height: 223px;
+        display: block;
+    }
+    .icon-con{
+        display: flex;
+        gap: 1rem;
+    }
+
+</style>

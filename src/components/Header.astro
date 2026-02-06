@@ -25,7 +25,7 @@ const { title, bgImage } = Astro.props;
                 <a href="/kontakt">Kontakt</a>
             </li>
             <li>
-                <a href="/login">Login</a>
+                <a id="auth-link" href="/login">Login</a>
             </li>
         </ul>
     </nav>
@@ -67,3 +67,30 @@ const { title, bgImage } = Astro.props;
         text-align: center;
     }
 </style>
+
+<script>
+import { logOut } from '../lib/api';
+import * as R from 'ramda';
+
+    const initAuth = () => {
+        const authLink = document.getElementById('auth-link') as HTMLAnchorElement;
+        if (!authLink) return;
+    
+        const token = sessionStorage.getItem('auth_token');
+        
+        const isLoggedIn = R.allPass([
+            R.complement(R.isNil),
+            R.complement(R.isEmpty)
+        ])(token);
+
+        if (isLoggedIn) {
+            authLink.textContent = 'LOG OUT';
+            authLink.href = '#';
+            authLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                logOut();
+            })
+        }
+    }
+    initAuth();
+</script>

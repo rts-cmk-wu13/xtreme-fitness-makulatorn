@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { z } from 'zod';
-import validator from 'validator'
+import * as Schemas from './schema.ts';
 
 const BASE_URL = 'http://localhost:4000';
 
@@ -34,58 +34,17 @@ export const publicPost = (path: string, body: any) => sendRequest(null, 'POST',
 export const secureGet = (accessToken: string, path: string) => sendRequest(accessToken, 'GET', path, null);
 export const securePost = (accessToken: string, path: string, body: any) => sendRequest(accessToken, 'POST', path, body);
 
-// Schemas
-export const userSchema = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-export const contactSchema = z.object({
-    name: z.string().min(1, "Navn skal minimum være 1 karakterer"),
-    email: z.string().email("Ugyldig email addresse"),
-    phone: z.string()
-      .transform((val) => val.replace(/\s+/g, ""))
-      .refine((val) => validator.isMobilePhone(val, 'any'), {
-          message: "Ugyldigt telefonnummer"
-    }),
-    message: z.string().min(10, "Besked skal være minimum 10 karakterer langt"),
-    subject: z.string().min(5, "Besked skal minimum være 5 karakterer lang"),
-});
-
-export const authRes = z.object({
-    accessToken: z.string().optional(), //allows empty response like for registering
-}).passthrough();
-
-export const exerciseSchema = z.object({
-    id: z.number(),
-    title: z.string(),
-    teaser: z.string(),
-    content: z.string(),
-    asset: z.object({
-        url: z.string(),
-        altText: z.string(),
-        width: z.number(),
-        height: z.number()
-    })
-});
-
-export const exercisesResponseSchema = z.object({
-    success: z.boolean(),
-    data: z.array(exerciseSchema)
-});
-
 // API Logic 
 export const registerUser = async (formData: any) => {
     const data = await publicPost('auth/register', formData);
-    return authRes.parse(data);
+    return Schemas.authRes.parse(data);
 };
 
 export const loginUser = async (credentials: any) => {
     const data = await publicPost('auth/login', credentials);
     const safeData = R.isEmpty(data) ? {accessToken: undefined} : data;
     return R.tryCatch(
-      (d: any) => authRes.parse(d),
+      (d: any) => Schemas.authRes.parse(d),
       R.always(null)
     )(safeData);
 };
@@ -94,13 +53,13 @@ export const getMyProfile = async (token: string) => {
     const data = await secureGet(token, 'users/me');
     const safeData = R.isEmpty(data) ? {accessToken: undefined} : data;
     return R.tryCatch(
-        (d: any) => userSchema.parse(d),
+        (d: any) => Schemas.userSchema.parse(d),
         R.always(null)
     )(safeData);
 };
 
 export const submitContactForm = async (formData: any) => {
-  const validated = contactSchema.parse(formData);
+  const validated = Schemas.contactSchema.parse(formData);
    const data = await publicPost('messages', validated);
   console.log("Contact form submitted:", data);
   return data;
@@ -136,16 +95,16 @@ export const logOut = () => {
 export const safeGetMyProfile = (token: string) => wrapSafe(() => getMyProfile(token), null);
 export const safeSubmitContact = async (formData: any): Promise<ApiResponse> => {
     return Promise.resolve(formData)
-    .then(data => contactSchema.parse(data))
+    .then(data => Schemas.contactSchema.parse(data))
     .then(submitContactForm)
     .then(res => R.mergeRight({ success: true }, res))
     .catch(formatZodError);
-};
-
-
-export const safeRegister = (formData: any): Promise<ApiResponse> => {
-  return Promise.resolve(formData)
-    .then(data => userSchema.parse(data))
+    
+    
+  };
+    export const safeRegister = (formData: any): Promise<ApiResponse> => {
+      return Promise.resolve(formData)
+    .then(data => Schemas.userSchema.parse(data))
     .then(registerUser)
     .then(res => R.mergeRight({ success: true}, res))
     .catch(formatZodError);
@@ -165,8 +124,33 @@ export const safeLogin = (credentials: any): Promise<ApiResponse> =>
       message: "Login error, is your email and password correct?" 
     }));
 
-export const safeGetExercises = async () => {
-    const response = await publicGet('exercises');
-    const validated = exercisesResponseSchema.parse(response);
-    return validated.data;
-};
+// Because typescript is so so so in love with types
+// And because R.curry makes such a complex functional type
+// You have to convert the type to unknown and then to any for the promise 
+// Essentially a shotgun wedding :3
+export const safeGetExercises = (): Promise<any> =>
+  (publicGet('exercises') as unknown as Promise<any>) 
+  .then((res: unknown) => Schemas.exercisesResponseSchema.parse(res))
+  .then(validated => validated.data)
+  .catch(err => {
+    console.error("Exercise fetch error.", err);
+    return [];
+  });
+
+export const safeGetEmployees = (): Promise<any> =>
+  (publicGet('employees') as unknown as Promise<any>)
+  .then((res:unknown) => Schemas.employeeResSchema.parse(res))
+  .then(validated => validated.data)
+  .catch(err => {
+    console.error("Employee fetch error.", err);
+    return [];
+  });
+
+export const safeGetBlog = (): Promise<any> =>
+  (publicGet('posts') as unknown as Promise<any>)
+  .then((res:unknown) => Schemas.postResSchema.parse(res))
+  .then(validated => validated.data)
+  .catch(err => {
+    console.error("Blog fetch error.", err);
+    return [];
+  })

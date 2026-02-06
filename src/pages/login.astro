@@ -1,0 +1,164 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout>
+    <Header title="LOGIN" bgImage="src/assets/headers/loginHeader.png"/>
+    <section class="contact-section"> 
+        <h1>LOG IND FOR AT TILMELDE DIG DAGENS TRÆNING</h1>
+        <h2>LOG IND</h2>
+    <form id="login-form" novalidate>
+        <div class="input-con">
+            <input class="form-input" type="email" name="email" placeholder="Email" required>
+            <input class="form-input" type="password" name="password" placeholder="Password" required>
+            <button type="submit" class="subscribe-con form-submit">
+                <span id="submit-text">Send</span>
+                <img src="/src/assets/icons/Button.svg" alt="">
+            </button>
+        </div>
+    </form>
+
+    <div id="toast" class="toast-hidden">
+        <div class="toast-content">
+            <span id="toast-message"></span>
+        </div>
+    </div>
+</section>
+    <Footer/>
+</Layout>
+
+<script>
+    import * as R from 'ramda';
+    import { safeLogin } from '../lib/api';
+    import { handleToastResponse } from '../lib/toast';
+
+    const form = document.getElementById('login-form') as HTMLFormElement;
+    const feedback = handleToastResponse('Velkommen tilbage!');
+
+    const processLogin = R.pipe(
+        safeLogin,
+        R.andThen(R.ifElse(
+            feedback,
+            () => setTimeout(() => location.href = '/', 1000),
+            () => { form.querySelector('button')!.disabled = false; }
+        ))
+    );
+
+    const handleSubmit = R.pipe(
+        R.tap((e: any) => e.preventDefault()),
+        R.tap(() => { form.querySelector('button')!.disabled = true; }),
+        e => Object.fromEntries(new FormData(e.currentTarget as HTMLFormElement)),
+        processLogin
+    );
+
+    form?.addEventListener('submit', handleSubmit);
+</script>
+
+<style>
+    h1, h2 {
+        text-align: center;
+        padding: 1rem;
+    }
+
+    h1 {
+        margin-top: 144px;
+        font-size: 31px;
+        color: var(--orange);
+    }
+
+    h2 {
+        font-size: 55px;
+        font-weight: bold;
+        margin-bottom: 58px2;
+    }
+
+    .subscribe-con input {
+        margin: 0;
+        display: inline;
+        white-space: nowrap;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .subscribe-con  {
+        display: flex !important;
+        flex-direction: row;
+        align-items: center;
+        text-decoration: none;
+        gap: 8px;
+        border: 1px solid var(--grey);
+        color: var(--grey);
+        border-radius: 40px;
+        padding: 5px 5px 5px 2rem;
+    }
+    .input-con {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        padding-bottom: 5rem;
+    }
+
+    .form-input, 
+    .form-textarea {
+        padding: 0.7rem 1.5rem;
+        border: 1px solid var(--grey);
+        background: white;
+        color: #777777;
+        width: 456px; 
+        max-width: 100%;
+        box-sizing: border-box;
+        font-family: inherit;
+        border-radius: 50px;
+    }
+
+    .form-textarea {
+        width: 453px; 
+        height: 120px;
+        border-radius: 25px;
+        resize: vertical;
+        margin-bottom: 20px;
+    }
+
+    .show-validation :invalid {
+        border-color: #ff3366;
+    }
+
+    .toast-hidden {
+        position: fixed;
+        bottom: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        opacity: 0;
+    }
+
+    .toast-visible {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 1;
+        z-index: 1000;
+        transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .toast-content {
+        background: #1a1a1a;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .success .toast-content { border: 1px solid #00ff88; }
+    .error .toast-content { border: 1px solid #ff3366; }
+    .success { color: #00ff88; }
+    .error { color: #ff3366; }
+    #toast-message { font-weight: bold; }
+</style>

@@ -1,0 +1,108 @@
+---
+import { safeGetBlog } from '../lib/api.ts';
+const blog = await safeGetBlog();
+---
+<section>
+    <h1>VORES NYHEDER</h1>
+    <h2>SENESTE BLOGINDLÆG</h2>
+    <div class="blog-con">
+    {blog.map((blog: any) => (
+        <article class="blog-card">
+        <div class="blog-content">
+        <img src={blog.asset.url} alt={blog.asset.altText} />
+        <div class="blog-date">
+            <date class="blog-day">{new Date(blog.createdAt).toLocaleDateString('da-DK',{
+                day: 'numeric',
+            }).replace(".", "")}
+            </date>
+            <date class="blog-month">{new Date(blog.createdAt).toLocaleDateString('da-DK',{
+                month:'short',
+            }).replace(".", "")}</date>
+        </div>
+            <h3>{blog.title}</h3>
+            <p>{blog.teaser}</p>
+        </div>
+        </article>
+    ))}
+    </div>
+</section>
+
+<style>
+    h1, h2 {
+        text-align: center;
+        padding: 1rem;
+    }
+
+    h1 {
+        margin-top: 144px;
+        font-size: 31px;
+        color: var(--orange);
+    }
+
+    h2 {
+        font-size: 55px;
+        font-weight: bold;
+        margin-bottom: 58px2;
+    }
+
+    h3 {
+        font-size: 25px;
+        text-wrap: nowrap;
+    }
+
+    .blog-con {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem; 
+        margin: 0 auto; 
+        width: 100%;
+    }
+    section{
+        margin: 5rem;
+    }
+    .blog-card {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 38px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .blog-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .blog-date, p, small {
+        font-size: 12px;
+        color: var(--grey);
+
+    }
+    .blog-date {
+        position: relative;
+        bottom: 50px;
+        background: linear-gradient(135deg, #ff8800, #ff4400);
+        color: white;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px; 
+        font-weight: bold;
+        padding: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+    }
+    .blog-date{
+        font-size: 40px;
+    }
+    .blog-month{
+        font-size: 15px;
+    }
+</style>
