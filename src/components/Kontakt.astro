@@ -197,15 +197,30 @@
     .error { color: #ff3366; }
     #toast-message { font-weight: bold; }
 
-    @media screen and (max-width: 800px){
+    @media screen and (max-width: 1200px){
         .contact-section{
             padding: unset;
+            justify-content: center;
         }
         form{
             align-items: center;
+            max-width: 100%;
         }
-        h1, h2{
+        .contact-title, .contact-subtitle{
             text-align: center;
+            font-size: 35pt;
+        }
+        .input-subcon{
+            flex-direction: column;
+        }
+        .input-con{
+            align-items: center;
+        }
+        .form-textarea{
+            width: fit-content;
+        }
+        .subscribe-con{
+            margin: unset;
         }
     }
 </style>

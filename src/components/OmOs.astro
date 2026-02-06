@@ -51,7 +51,8 @@
     }
     .about-details div {
         width: 200px; 
-        flex-shrink: 0; 
+        flex-shrink: 0;
+        max-width: fit-content; 
     }
     .about-details {
         display: flex;
@@ -115,5 +116,39 @@
     }
     .tilmeld{
         margin: 6px;
+    }
+    @media screen and (max-width: 1200px) {
+        .about-txt-con{
+            text-align: center;
+            align-items: center;
+        }
+        .about{
+            padding: unset;
+            justify-content: center;
+            align-items: center;
+        }
+        .about-details{
+            gap: 1rem;
+        }
+        .title{
+            width: 100%;
+        }
+        .subscribe-con{
+            margin: unset;
+        }
+        .desc{
+            margin: 1rem;
+        }
+        .about-int{
+            text-shadow: 2px 0 #00000036,
+            -2px 0 #00000036,
+            0 2px #00000036,
+            0 -2px #00000036,
+            1px 1px #00000036,
+            -1px -1px #00000036,
+            1px -1px #00000036,
+            -1px 1px #00000036;
+
+        }
     }
 </style>

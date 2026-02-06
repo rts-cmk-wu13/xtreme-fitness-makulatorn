@@ -93,13 +93,16 @@ const employees = await safeGetEmployees();
         gap: 1rem;
     }
 
-    @media screen and (max-width: 800px){
+    @media screen and (max-width: 1200px){
+        h1{
+            font-size: 65pt;
+        }
+    }
+    @media screen and (max-width: 1500px) {
         .div-con{
             grid-template-columns: 1fr;
             width: unset;
-        }
-        h1{
-            font-size: 65pt;
+            padding: unset;
         }
     }
 </style>
