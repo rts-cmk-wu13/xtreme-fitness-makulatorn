@@ -8,6 +8,12 @@ body {
 	margin: 0 auto;
 	padding: 0;
     box-sizing: border-box;
+    font-family: var(--font-body);
+    font-optical-sizing: auto;
+}
+
+h1, h2, h3{
+    font-family: var(--font-heading);
 }
 
 a, li, ul, button, input{
@@ -25,4 +31,6 @@ a, li, ul, button, input{
    --grey: #777777;
    --background-image: url('/assets/bg/pattern_bg.jpg');
    --background-image-2: url('/assets/bg/slider_bg_overlay.png');
+   --font-heading: 'Teko', sans-serif;
+   --font-body: "Ubuntu", sans-serif;
 }

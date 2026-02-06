@@ -99,11 +99,10 @@ export const safeSubmitContact = async (formData: any): Promise<ApiResponse> => 
     .then(submitContactForm)
     .then(res => R.mergeRight({ success: true }, res))
     .catch(formatZodError);
-    
-    
   };
-    export const safeRegister = (formData: any): Promise<ApiResponse> => {
-      return Promise.resolve(formData)
+
+export const safeRegister = (formData: any): Promise<ApiResponse> => {
+    return Promise.resolve(formData)
     .then(data => Schemas.userSchema.parse(data))
     .then(registerUser)
     .then(res => R.mergeRight({ success: true}, res))
