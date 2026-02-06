@@ -1,11 +1,15 @@
 ---
 const { title, bgImage } = Astro.props;
-
 ---
 <header style={{ backgroundImage: `url(${bgImage})` }}>
     <nav>
         <img class="logo" src="src/assets/icons/logo.png" alt="">
-        <ul>
+        <button class="menu-toggle" aria-label="Toggle Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul id="nav-menu">
             <li>
                 <a href="/">Forside</a>
             </li>
@@ -41,36 +45,99 @@ const { title, bgImage } = Astro.props;
         background-size: cover;
         background-position: center;
         background-color: #333; 
+        position: relative;
     }
     nav {
         display: flex;
-        justify-content: flex-end;
-        padding: 20px;
         justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        position: relative;
+        z-index: 100;
     }
-    ul{
+    ul {
         display: flex;
         gap: 3rem;
         padding: 1rem;
         max-width: 100%;
-        flex-wrap: wrap;
     }
     a {
         color: white;
         font-size: 1.2rem;
         padding: 0.5rem;
-        &:hover{
-            color: var(--orange);
-        }
+        text-decoration: none;
     }
-    h1{
+    a:hover {
+        color: var(--orange);
+    }
+    h1 {
         color: white;
         font-size: 130pt;
         text-align: center;
     }
-    @media screen and (max-width: 1200px){
-        h1, h2{
+
+    .menu-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 6px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .menu-toggle span {
+        display: block;
+        width: 30px;
+        height: 3px;
+        background-color: white;
+        transition: 0.3s;
+    }
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .menu-toggle.active span:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+    .menu-toggle.active span:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+    @media screen and (max-width: 1200px) {
+        h1 {
             font-size: 35pt;
+        }
+
+        .menu-toggle, .logo {
+            display: flex;
+            z-index: 9999;
+        }
+        ul {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw; 
+            height: 100vh;
+            background-color: #111;
+            z-index: 99;
+            gap: 2rem;
+            padding: 0;
+        }
+        ul.active {
+            display: flex;
+        }
+
+        li {
+            border-bottom: 1px solid #333;
+            width: 100%;
+        }
+
+        a {
+            display: block;
+            padding: 1.5rem;
         }
     }
 </style>
@@ -99,5 +166,31 @@ import * as R from 'ramda';
             })
         }
     }
+
+    const mobileMenu = () => {
+        const toggle = document.querySelector('.menu-toggle');
+        const menu = document.getElementById('nav-menu');
+
+        const scroll = (isActive: boolean) => 
+            document.body.style.overflow = isActive ? 'hidden' : '';
+
+        
+        toggle?.addEventListener('click', () => {
+            const isActive = menu?.classList.toggle('active') ?? false;
+            toggle.classList.toggle('active');
+
+            scroll(isActive)
+        });
+
+        menu?.querySelectorAll('a').forEach(link => 
+            link.addEventListener('click', () => {
+                menu.classList.remove('active');
+                toggle?.classList.remove('active');
+                scroll(false);
+            })
+        )
+    }
+
     initAuth();
+    mobileMenu();
 </script>
